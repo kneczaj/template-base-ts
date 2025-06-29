@@ -5,6 +5,7 @@
   "scripts": {
     "start": "yarn vite-node src/index.ts",
     "test": "vitest",
+    "test:once": "vitest run",
     "check": "biome check",
     "fix": "biome check --write",
     "prepare": "husky"
