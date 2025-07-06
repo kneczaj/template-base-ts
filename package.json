@@ -16,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
+    "@commitlint/cli": "^19.8.1",
     "husky": "^9.1.7",
     "vitest": "^3.0.8"
   }
