@@ -8,7 +8,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["!data/**"]
+    "includes": ["**", "!data/**"]
   },
   "formatter": {
     "enabled": true,
