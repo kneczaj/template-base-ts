@@ -13,3 +13,9 @@
 ### Typing
 1. Arrays are never optional. If no data, then this property has empty array 
    value
+
+### Unit tests
+1. All mocks are placed in `mocks.ts` file in the same directory as the test
+   file. This is also about results.
+2. All mocks should be typed.
+3. Mocks are imported to test file with `import * as MOCKS from './mocks.ts`.
