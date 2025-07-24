@@ -7,7 +7,8 @@
     "defaultBranch": "master"
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["!data/**"]
   },
   "formatter": {
     "enabled": true,
@@ -48,6 +49,10 @@
       "performance": {
         // it is quite more readable with off, and we need to move data processing to backend anyway
         "noAccumulatingSpread": "off"
+      },
+      "style": {
+        // it makes a lot of merge conflicts
+        "useImportType": "off"
       }
     }
   },
