@@ -12,7 +12,8 @@
     "test:once": "vitest run --pass-with-no-tests",
     "check": "biome check",
     "fix": "biome check --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "codegen": "graphql-codegen"
   },
   "author": "Kamil Neczaj",
   "license": "LicenseRef-LICENSE",
