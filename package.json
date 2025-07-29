@@ -1,0 +1,23 @@
+{
+  "name": "template-base",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "yarn vite-node src/index.ts",
+    "test": "vitest",
+    "test:once": "vitest run",
+    "check": "biome check",
+    "fix": "biome check --write",
+    "prepare": "husky"
+  },
+  "author": "Kamil Neczaj",
+  "license": "LicenseRef-LICENSE",
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "typescript": "^5.8.3",
+    "vitest": "^3.0.8"
+  }
+}

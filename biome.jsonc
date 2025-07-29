@@ -1,0 +1,64 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "master"
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**", "!data/**"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        // forEach looks more readable than `for` loop, and better matches functional programming
+        "noForEach": "off",
+        // class with only static elements is a nice way to group a set of function in an organism if they closely cooperate with each other
+        "noStaticOnlyClass": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": {
+          "level": "error",
+          "fix": "none",
+          "options": {
+            // otherwise using rest operator is quite inconvenient
+            "ignoreRestSiblings": true
+          }
+        },
+        "noUnusedFunctionParameters": {
+          "level": "error",
+          "fix": "none"
+        }
+      },
+      "performance": {
+        // it is quite more readable with off, and we need to move data processing to backend anyway
+        "noAccumulatingSpread": "off"
+      },
+      "style": {
+        // it makes a lot of merge conflicts
+        "useImportType": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
+}
