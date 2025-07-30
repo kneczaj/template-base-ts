@@ -112,6 +112,30 @@ describe('Schema IDs tools', () => {
       expect(result).toEqual(['user.posts', 'user.posts.author']);
     });
 
+    it('should detect missing id fields with fragments', () => {
+      const query = `
+        fragment PostBrief on Post {
+          title
+          author {
+            name
+          }
+        }
+        
+        query {
+          user {
+            id
+            posts {
+              ...PostBrief
+            }
+          }
+        }
+      `;
+
+      const ast = parse(query);
+      const result = findMissingIds(ast, fieldTypeMapping, {});
+      expect(result).toEqual(['user.posts', 'user.posts.author']);
+    });
+
     it('should pass when alternative key fields are present', () => {
       const query = `
         query {

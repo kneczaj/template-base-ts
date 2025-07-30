@@ -7,9 +7,11 @@ import {
   type DocumentNode,
   type FieldDefinitionNode,
   type FieldNode,
+  type FragmentDefinitionNode,
   type ObjectTypeDefinitionNode,
   parse,
   type ScalarTypeDefinitionNode,
+  type SelectionNode,
   type SelectionSetNode,
   type TypeNode,
   visit,
@@ -82,56 +84,72 @@ export function findMissingIds(
   typePolicies: TypePolicies,
 ): string[] {
   const missingIdFields: string[] = [];
-  const fieldPath: string[] = [];
-  const typeStack: string[] = [];
+  const fragments: Record<string, FragmentDefinitionNode> = {};
+
+  // First, collect all fragment definitions
+  visit(queryAST, {
+    FragmentDefinition(node: FragmentDefinitionNode) {
+      fragments[node.name.value] = node;
+    },
+  });
+
+  function processSelectionSet(selectionSet: SelectionSetNode, fieldPath: string[]): void {
+    // Get the current field type if we're in a nested field
+    const currentFieldName = fieldPath[fieldPath.length - 1];
+    const currentType = currentFieldName ? fieldTypeMapping[currentFieldName] : null;
+    const typePolicy = currentType ? typePolicies[currentType] : null;
+    const keyFields = typePolicy?.keyFields as string[] | undefined;
+
+    // Process all selections, expanding fragments
+    function expandSelection(selection: SelectionNode): SelectionNode[] {
+      if (selection.kind === 'FragmentSpread') {
+        const fragment = fragments[selection.name.value];
+        if (fragment) {
+          return fragment.selectionSet.selections.flatMap(expandSelection);
+        }
+        return [];
+      } else if (selection.kind === 'InlineFragment') {
+        return selection.selectionSet.selections.flatMap(expandSelection);
+      }
+      return [selection];
+    }
+
+    const expandedSelections = selectionSet.selections.flatMap(expandSelection);
+    const fieldSelections = expandedSelections.filter(
+      (selection): selection is FieldNode => selection.kind === 'Field',
+    );
+
+    const hasFields = fieldSelections.length > 0;
+    const hasIdField = fieldSelections.some((selection) => selection.name.value === 'id');
+    const hasAlternativeKeyFields = keyFields
+      ? fieldSelections.some((selection) => keyFields.includes(selection.name.value))
+      : false;
+
+    // If this selection set represents an object type and is missing ID/key fields
+    if (hasFields && !hasIdField && !hasAlternativeKeyFields && fieldPath.length > 0) {
+      missingIdFields.push(fieldPath.join('.'));
+    }
+
+    // Recursively process nested selection sets
+    fieldSelections
+      .filter((selection) => selection.selectionSet)
+      .forEach((selection) => {
+        const fieldType = fieldTypeMapping[selection.name.value];
+        if (fieldType && selection.selectionSet) {
+          processSelectionSet(selection.selectionSet, [...fieldPath, selection.name.value]);
+        }
+      });
+  }
 
   visit(queryAST, {
-    Field: {
-      enter(node: FieldNode) {
-        fieldPath.push(node.name.value);
-
-        // Determine the type of this field using schema mapping
-        const fieldType = fieldTypeMapping[node.name.value];
-        if (fieldType) {
-          typeStack.push(fieldType);
-        }
-      },
-      leave() {
-        fieldPath.pop();
-
-        // Pop type stack if we added a type for this field
-        const fieldName = fieldPath[fieldPath.length - 1];
-        if (fieldName && fieldTypeMapping[fieldName]) {
-          typeStack.pop();
-        }
-      },
-    },
-    SelectionSet(node: SelectionSetNode, _key, parent) {
-      // Skip root query selection sets
-      if (parent && 'kind' in parent && parent.kind === 'OperationDefinition') {
-        return;
-      }
-
-      const currentType = typeStack[typeStack.length - 1];
-      const typePolicy = currentType ? typePolicies[currentType] : null;
-      const keyFields = typePolicy?.keyFields as string[] | undefined;
-
-      const hasIdField = node.selections.some((selection) => {
-        return selection.kind === 'Field' && selection.name.value === 'id';
-      });
-
-      const hasAlternativeKeyFields = keyFields
-        ? keyFields.some((keyField) =>
-            node.selections.some(
-              (selection) => selection.kind === 'Field' && selection.name.value === keyField,
-            ),
-          )
-        : false;
-
-      const hasFields = node.selections.some((selection) => selection.kind === 'Field');
-
-      if (hasFields && !hasIdField && !hasAlternativeKeyFields) {
-        missingIdFields.push(fieldPath.join('.'));
+    OperationDefinition(node) {
+      if (node.selectionSet) {
+        // Process each top-level field
+        node.selectionSet.selections.forEach((selection) => {
+          if (selection.kind === 'Field' && selection.selectionSet) {
+            processSelectionSet(selection.selectionSet, [selection.name.value]);
+          }
+        });
       }
     },
   });
