@@ -6,7 +6,7 @@
     "start": "yarn vite-node src/index.ts",
     "test": "vitest",
     "test:once": "vitest run",
-    "check": "biome check",
+    "lint": "biome check",
     "fix": "biome check --write",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch"
