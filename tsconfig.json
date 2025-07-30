@@ -1,16 +1,4 @@
 {
-  "compilerOptions": {
-    "baseUrl": "src",
-    "module": "CommonJS",
-    "declaration": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2017",
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "resolveJsonModule": true,
-    "downlevelIteration": true,
-    "noEmit": true
-  }
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

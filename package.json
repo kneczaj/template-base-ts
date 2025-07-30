@@ -1,9 +1,13 @@
 {
-  "name": "template-base",
+  "name": "template-react",
+  "private": true,
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "yarn vite-node src/index.ts",
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
     "test": "vitest",
     "test:once": "vitest run",
     "check": "biome check",
@@ -12,12 +16,21 @@
   },
   "author": "Kamil Neczaj",
   "license": "LicenseRef-LICENSE",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "globals": "^16.3.0",
     "husky": "^9.1.7",
     "typescript": "^5.8.3",
+    "vite": "^7.0.4",
     "vitest": "^3.0.8"
   }
 }
