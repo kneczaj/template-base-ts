@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:once": "vitest run",
+    "test:once": "vitest run --pass-with-no-tests",
     "check": "biome check",
     "fix": "biome check --write",
     "prepare": "husky"
