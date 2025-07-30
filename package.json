@@ -10,18 +10,14 @@
     "fix": "biome check --write",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Kamil Neczaj",
   "license": "LicenseRef-LICENSE",
-  "description": "",
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
     "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "husky": "^9.1.7",
     "typescript": "^5.8.3",
     "vitest": "^3.0.8"
-  },
-  "dependencies": {
-    "@commitlint/config-conventional": "^19.8.1"
   }
 }
