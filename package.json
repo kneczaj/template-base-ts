@@ -6,13 +6,13 @@
   "scripts": {
     "start": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
     "test:once": "vitest run --pass-with-no-tests",
-    "check": "biome check",
+    "lint": "biome check",
     "fix": "biome check --write",
-    "prepare": "husky"
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch"
   },
   "author": "Kamil Neczaj",
   "license": "LicenseRef-LICENSE",
