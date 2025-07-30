@@ -3,6 +3,7 @@ query User($id: ID!) {
     id
     bio
     comments {
+      id
       author {
         email
       }
