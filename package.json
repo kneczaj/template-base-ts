@@ -1,14 +1,23 @@
 {
   "author": "Kamil Neczaj",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@types/node": "^24.2.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
     "@vitest/coverage-v8": "^3.2.4",
+    "globals": "^16.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.4",
     "typescript": "^5.8.3",
+    "vite": "^7.0.4",
     "vitest": "^3.2.4"
   },
   "license": "LicenseRef-LICENSE",
@@ -17,13 +26,15 @@
       "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
     ]
   },
-  "main": "index.js",
-  "name": "template-base",
+  "name": "template-react",
+  "private": true,
   "scripts": {
+    "build": "tsc -b && vite build",
     "fix": "yarn lint --write",
     "lint": "biome check",
     "prepare": "husky",
-    "start": "yarn vite-node src/index.ts",
+    "preview": "vite preview",
+    "start": "vite",
     "test": "yarn test:base watch",
     "test:base": "vitest",
     "test:coverage": "yarn test:once --coverage",
@@ -32,5 +43,6 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn typecheck --watch"
   },
+  "type": "module",
   "version": "1.0.0"
 }
