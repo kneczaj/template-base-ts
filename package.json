@@ -44,7 +44,7 @@
     "test:coverage": "yarn test:once --coverage",
     "test:coverage:pr": "git fetch && yarn test:coverage --changed=${REMOTE}/${MASTER_BRANCH}",
     "test:once": "yarn test:base run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p ./tsconfig.app.json",
     "typecheck:watch": "yarn typecheck --watch"
   },
   "type": "module",
