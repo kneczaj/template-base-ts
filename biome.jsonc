@@ -11,7 +11,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!data/**", "!coverage/**"]
+    "includes": ["**", "!data/**", "!coverage/**", "!dist/**"]
   },
   "formatter": {
     "enabled": true,
