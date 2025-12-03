@@ -1,0 +1,6 @@
+services:
+  graphiql:
+    build:
+      context: .
+    ports:
+      - "80:80"
